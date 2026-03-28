@@ -20,17 +20,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Show repo files
-        run: |
-          pwd
-          ls -la
-          find . -maxdepth 2 -type f | head -n 100
-
       - name: Install dependencies
         run: npm install
-
-      - name: Check Capacitor packages
-        run: npm ls @capacitor/cli @capacitor/core @capacitor/ios || true
 
       - name: Install Capacitor iOS
         run: npm install @capacitor/ios@^8.1.0 --save
@@ -47,23 +38,33 @@ jobs:
       - name: Sync iOS
         run: npx cap sync ios
 
-      - name: Inspect Capacitor output
+      - name: Inspect iOS output
         run: |
-          ls -la
-          if [ -d "ios" ]; then
-            echo "ios klasoru olustu"
-            find ios -maxdepth 5 -type d | head -n 100
-            find ios -maxdepth 5 -type f | head -n 200
-          else
+          if [ ! -d "ios" ]; then
             echo "ios klasoru hic olusmadi"
             exit 1
           fi
 
-      - name: Verify Podfile exists
+          echo "ios klasoru bulundu"
+          find ios -maxdepth 5 -type d | head -n 100
+          find ios -maxdepth 5 -type f | head -n 200
+
+      - name: Verify Xcode project exists
         run: |
-          PODFILE=$(find ios -name Podfile | head -n 1)
-          if [ -z "$PODFILE" ]; then
-            echo "Podfile bulunamadi"
-            exit 1
+          if [ -f "ios/App/App.xcodeproj/project.pbxproj" ]; then
+            echo "Xcode project bulundu"
+            exit 0
           fi
-          echo "Podfile bulundu: $PODFILE"
+
+          if [ -f "ios/App/App.xcworkspace/contents.xcworkspacedata" ]; then
+            echo "Xcode workspace bulundu"
+            exit 0
+          fi
+
+          if find ios -name "Package.swift" | grep -q "Package.swift"; then
+            echo "Swift Package Manager yapisi bulundu"
+            exit 0
+          fi
+
+          echo "iOS native proje dosyalari bulunamadi"
+          exit 1
