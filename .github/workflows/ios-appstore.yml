@@ -29,24 +29,29 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Check Capacitor packages
+        run: npm ls @capacitor/cli @capacitor/core @capacitor/ios || true
+
       - name: Install Capacitor iOS
         run: npm install @capacitor/ios@^8.1.0 --save
 
       - name: Build web app
         run: npm run build
 
-      - name: Add iOS platform if missing
-        run: |
-          if [ ! -d "ios" ]; then
-            npx cap add ios
-          fi
+      - name: Show Capacitor config
+        run: cat capacitor.config.json
+
+      - name: Add iOS platform
+        run: npx cap add ios --verbose
 
       - name: Sync iOS
-        run: npx cap sync ios
+        run: npx cap sync ios --verbose
 
       - name: Inspect iOS files
         run: |
-          find ios -maxdepth 4 -type f | head -n 200
+          ls -la
+          find ios -maxdepth 5 -type f | head -n 300 || true
+          find ios -maxdepth 5 -type d | head -n 100 || true
 
       - name: Verify Podfile exists
         run: |
