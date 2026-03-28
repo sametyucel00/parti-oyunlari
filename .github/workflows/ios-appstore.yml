@@ -42,16 +42,22 @@ jobs:
         run: cat capacitor.config.json
 
       - name: Add iOS platform
-        run: npx cap add ios --verbose
+        run: npx cap add ios
 
       - name: Sync iOS
-        run: npx cap sync ios --verbose
+        run: npx cap sync ios
 
-      - name: Inspect iOS files
+      - name: Inspect Capacitor output
         run: |
           ls -la
-          find ios -maxdepth 5 -type f | head -n 300 || true
-          find ios -maxdepth 5 -type d | head -n 100 || true
+          if [ -d "ios" ]; then
+            echo "ios klasoru olustu"
+            find ios -maxdepth 5 -type d | head -n 100
+            find ios -maxdepth 5 -type f | head -n 200
+          else
+            echo "ios klasoru hic olusmadi"
+            exit 1
+          fi
 
       - name: Verify Podfile exists
         run: |
