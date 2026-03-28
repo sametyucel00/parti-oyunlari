@@ -42,6 +42,21 @@ jobs:
       - name: Sync iOS
         run: npx cap sync ios
 
+      - name: Set export compliance
+        run: |
+          INFO_PLIST=$(find ios -name Info.plist | head -n 1)
+
+          if [ -z "$INFO_PLIST" ]; then
+            echo "Info.plist bulunamadi"
+            exit 1
+          fi
+
+          /usr/libexec/PlistBuddy -c "Delete :ITSAppUsesNonExemptEncryption" "$INFO_PLIST" || true
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$INFO_PLIST"
+
+          echo "Guncellenen Info.plist: $INFO_PLIST"
+          /usr/libexec/PlistBuddy -c "Print :ITSAppUsesNonExemptEncryption" "$INFO_PLIST"
+
       - name: Locate Xcode project
         run: |
           PROJECT_FILE=$(find ios -name "*.xcodeproj" | head -n 1)
