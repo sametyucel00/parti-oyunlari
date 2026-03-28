@@ -1,4 +1,4 @@
-name: ios-setup-test
+name: ios-appstore
 
 on:
   workflow_dispatch:
@@ -7,9 +7,13 @@ permissions:
   contents: read
 
 jobs:
-  ios-setup:
+  build-and-upload:
     runs-on: macos-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      APP_IDENTIFIER: com.partioyunlari.app
 
     steps:
       - name: Checkout
@@ -29,42 +33,236 @@ jobs:
       - name: Build web app
         run: npm run build
 
-      - name: Show Capacitor config
-        run: cat capacitor.config.json
-
       - name: Add iOS platform
-        run: npx cap add ios
+        run: |
+          if [ ! -d "ios" ]; then
+            npx cap add ios
+          fi
 
       - name: Sync iOS
         run: npx cap sync ios
 
-      - name: Inspect iOS output
+      - name: Locate Xcode project
         run: |
-          if [ ! -d "ios" ]; then
-            echo "ios klasoru hic olusmadi"
+          PROJECT_FILE=$(find ios -name "*.xcodeproj" | head -n 1)
+          WORKSPACE_FILE=$(find ios -name "*.xcworkspace" | head -n 1)
+
+          if [ -n "$PROJECT_FILE" ]; then
+            echo "XCODE_PROJECT=$PROJECT_FILE" >> "$GITHUB_ENV"
+            echo "Xcode project bulundu: $PROJECT_FILE"
+          fi
+
+          if [ -n "$WORKSPACE_FILE" ]; then
+            echo "XCODE_WORKSPACE=$WORKSPACE_FILE" >> "$GITHUB_ENV"
+            echo "Xcode workspace bulundu: $WORKSPACE_FILE"
+          fi
+
+      - name: Detect scheme
+        run: |
+          if [ -n "$XCODE_WORKSPACE" ]; then
+            SCHEME=$(xcodebuild -list -workspace "$XCODE_WORKSPACE" | awk '/Schemes:/{getline; print $1}')
+          else
+            SCHEME=$(xcodebuild -list -project "$XCODE_PROJECT" | awk '/Schemes:/{getline; print $1}')
+          fi
+
+          echo "XCODE_SCHEME=$SCHEME" >> "$GITHUB_ENV"
+          echo "Scheme: $SCHEME"
+
+      - name: Generate iOS app icons from Android source
+        run: |
+          SOURCE_ICON="android/app/src/main/ic_launcher-playstore.png"
+          if [ ! -f "$SOURCE_ICON" ]; then
+            echo "Kaynak ikon bulunamadi: $SOURCE_ICON"
             exit 1
           fi
 
-          echo "ios klasoru bulundu"
-          find ios -maxdepth 5 -type d | head -n 100
-          find ios -maxdepth 5 -type f | head -n 200
+          ICONSET_DIR=$(find ios -path "*AppIcon.appiconset" -type d | head -n 1)
+          if [ -z "$ICONSET_DIR" ]; then
+            ASSETS_DIR=$(find ios -path "*Assets.xcassets" -type d | head -n 1)
+            if [ -z "$ASSETS_DIR" ]; then
+              echo "Assets.xcassets bulunamadi"
+              exit 1
+            fi
+            ICONSET_DIR="$ASSETS_DIR/AppIcon.appiconset"
+            mkdir -p "$ICONSET_DIR"
+          fi
 
-      - name: Verify Xcode project exists
+          rm -f "$ICONSET_DIR"/*.png
+
+          generate_icon() {
+            local size="$1"
+            local filename="$2"
+            sips -z "$size" "$size" "$SOURCE_ICON" --out "$ICONSET_DIR/$filename" >/dev/null
+          }
+
+          generate_icon 40 "icon-20@2x.png"
+          generate_icon 60 "icon-20@3x.png"
+          generate_icon 58 "icon-29@2x.png"
+          generate_icon 87 "icon-29@3x.png"
+          generate_icon 80 "icon-40@2x.png"
+          generate_icon 120 "icon-40@3x.png"
+          generate_icon 120 "icon-60@2x.png"
+          generate_icon 180 "icon-60@3x.png"
+          generate_icon 20 "icon-20.png"
+          generate_icon 29 "icon-29.png"
+          generate_icon 40 "icon-40.png"
+          generate_icon 76 "icon-76.png"
+          generate_icon 152 "icon-76@2x.png"
+          generate_icon 167 "icon-83.5@2x.png"
+          generate_icon 1024 "icon-1024.png"
+
+          cat > "$ICONSET_DIR/Contents.json" <<'EOF'
+          {
+            "images": [
+              { "idiom": "iphone", "size": "20x20", "scale": "2x", "filename": "icon-20@2x.png" },
+              { "idiom": "iphone", "size": "20x20", "scale": "3x", "filename": "icon-20@3x.png" },
+              { "idiom": "iphone", "size": "29x29", "scale": "2x", "filename": "icon-29@2x.png" },
+              { "idiom": "iphone", "size": "29x29", "scale": "3x", "filename": "icon-29@3x.png" },
+              { "idiom": "iphone", "size": "40x40", "scale": "2x", "filename": "icon-40@2x.png" },
+              { "idiom": "iphone", "size": "40x40", "scale": "3x", "filename": "icon-40@3x.png" },
+              { "idiom": "iphone", "size": "60x60", "scale": "2x", "filename": "icon-60@2x.png" },
+              { "idiom": "iphone", "size": "60x60", "scale": "3x", "filename": "icon-60@3x.png" },
+              { "idiom": "ipad", "size": "20x20", "scale": "1x", "filename": "icon-20.png" },
+              { "idiom": "ipad", "size": "20x20", "scale": "2x", "filename": "icon-20@2x.png" },
+              { "idiom": "ipad", "size": "29x29", "scale": "1x", "filename": "icon-29.png" },
+              { "idiom": "ipad", "size": "29x29", "scale": "2x", "filename": "icon-29@2x.png" },
+              { "idiom": "ipad", "size": "40x40", "scale": "1x", "filename": "icon-40.png" },
+              { "idiom": "ipad", "size": "40x40", "scale": "2x", "filename": "icon-40@2x.png" },
+              { "idiom": "ipad", "size": "76x76", "scale": "1x", "filename": "icon-76.png" },
+              { "idiom": "ipad", "size": "76x76", "scale": "2x", "filename": "icon-76@2x.png" },
+              { "idiom": "ipad", "size": "83.5x83.5", "scale": "2x", "filename": "icon-83.5@2x.png" },
+              { "idiom": "ios-marketing", "size": "1024x1024", "scale": "1x", "filename": "icon-1024.png" }
+            ],
+            "info": {
+              "author": "xcode",
+              "version": 1
+            }
+          }
+          EOF
+
+          echo "Olusturulan iOS icon set:"
+          ls -la "$ICONSET_DIR"
+
+      - name: Import signing certificate
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.IOS_DIST_P12_PASSWORD }}
         run: |
-          if [ -f "ios/App/App.xcodeproj/project.pbxproj" ]; then
-            echo "Xcode project bulundu"
-            exit 0
+          CERT_PATH="$RUNNER_TEMP/dist-cert.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERT_PATH"
+
+          security create-keychain -p "" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+
+      - name: Install provisioning profile
+        env:
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.IOS_APPSTORE_PROFILE_BASE64 }}
+        run: |
+          PP_PATH="$RUNNER_TEMP/app.mobileprovision"
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+
+          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c 'Print Name' /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+          UUID=$(/usr/libexec/PlistBuddy -c 'Print UUID' /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+
+          cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+
+          echo "PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
+          echo "PROFILE_UUID=$UUID" >> "$GITHUB_ENV"
+          echo "Provisioning profile: $PROFILE_NAME"
+
+      - name: Archive app
+        run: |
+          mkdir -p build
+
+          if [ -n "$XCODE_WORKSPACE" ]; then
+            xcodebuild \
+              -workspace "$XCODE_WORKSPACE" \
+              -scheme "$XCODE_SCHEME" \
+              -configuration Release \
+              -archivePath build/App.xcarchive \
+              -destination "generic/platform=iOS" \
+              DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}" \
+              PRODUCT_BUNDLE_IDENTIFIER="$APP_IDENTIFIER" \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="Apple Distribution" \
+              PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
+              clean archive
+          else
+            xcodebuild \
+              -project "$XCODE_PROJECT" \
+              -scheme "$XCODE_SCHEME" \
+              -configuration Release \
+              -archivePath build/App.xcarchive \
+              -destination "generic/platform=iOS" \
+              DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}" \
+              PRODUCT_BUNDLE_IDENTIFIER="$APP_IDENTIFIER" \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="Apple Distribution" \
+              PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
+              clean archive
           fi
 
-          if [ -f "ios/App/App.xcworkspace/contents.xcworkspacedata" ]; then
-            echo "Xcode workspace bulundu"
-            exit 0
+      - name: Create export options
+        run: |
+          cat > exportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>teamID</key>
+            <string>${{ secrets.APPLE_TEAM_ID }}</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.partioyunlari.app</key>
+              <string>$PROFILE_NAME</string>
+            </dict>
+            <key>uploadSymbols</key>
+            <true/>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportOptionsPlist exportOptions.plist \
+            -exportPath build/export
+
+      - name: Verify IPA
+        run: |
+          if [ -f "build/export/App.ipa" ]; then
+            echo "IPA olustu"
+            ls -la build/export
+          else
+            echo "IPA bulunamadi"
+            find build -maxdepth 3 -type f | head -n 100
+            exit 1
           fi
 
-          if find ios -name "Package.swift" | grep -q "Package.swift"; then
-            echo "Swift Package Manager yapisi bulundu"
-            exit 0
-          fi
+      - name: Upload to App Store Connect
+        env:
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+          APPSTORE_API_ISSUER_ID: ${{ secrets.APPSTORE_API_ISSUER_ID }}
+          APPSTORE_API_PRIVATE_KEY_BASE64: ${{ secrets.APPSTORE_API_PRIVATE_KEY_BASE64 }}
+        run: |
+          mkdir -p "$HOME/private_keys"
+          echo -n "$APPSTORE_API_PRIVATE_KEY_BASE64" | base64 --decode -o "$HOME/private_keys/AuthKey_${APPSTORE_API_KEY_ID}.p8"
 
-          echo "iOS native proje dosyalari bulunamadi"
-          exit 1
+          xcrun altool \
+            --upload-app \
+            --type ios \
+            --file "build/export/App.ipa" \
+            --apiKey "$APPSTORE_API_KEY_ID" \
+            --apiIssuer "$APPSTORE_API_ISSUER_ID"
