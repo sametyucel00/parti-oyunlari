@@ -77,13 +77,15 @@ jobs:
 
           echo "XCODE_SCHEME=$SCHEME" >> "$GITHUB_ENV"
 
-      - name: Generate iOS app icons from Android source
+      - name: Generate iOS app icons from source
         run: |
-          SOURCE_ICON="android/app/src/main/ic_launcher-playstore.png"
-          if [ ! -f "$SOURCE_ICON" ]; then
-            echo "Kaynak ikon bulunamadi: $SOURCE_ICON"
+          SOURCE_ICON=$(find . -name "ic_launcher-playstore.png" | head -n 1)
+          if [ -z "$SOURCE_ICON" ]; then
+            echo "Kaynak ikon bulunamadi"
             exit 1
           fi
+
+          echo "Kaynak ikon: $SOURCE_ICON"
 
           ICONSET_DIR=$(find ios -path "*AppIcon.appiconset" -type d | head -n 1)
           if [ -z "$ICONSET_DIR" ]; then
