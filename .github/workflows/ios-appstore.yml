@@ -52,7 +52,9 @@ jobs:
 
       - name: Install CocoaPods
         run: |
-          cd ios/App
+          find ios -name Podfile
+          POD_DIR=$(dirname "$(find ios -name Podfile | head -n 1)")
+          cd "$POD_DIR"
           pod install
 
       - name: Import signing certificate
