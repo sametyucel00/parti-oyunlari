@@ -1,0 +1,452 @@
+[
+  {
+    "name": "Kitap Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Pasta Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Diş Fırçası Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Deniz Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Gül Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Yaz Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Para Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Ekmek Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Futbol Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Buzdolabı Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Bıçak Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Saat Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Yağmur Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Ekmek Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Para Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Televizyon Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Futbol Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Diş Fırçası Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Telefon Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Kış Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Doktor Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Bıçak Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Para Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Gül Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Orman Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Kış Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Saat Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Polis Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Araba Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Avukat Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Köpek Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Deniz Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Okul Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Güneş Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Polis Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Güneş Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Uçak Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Gözlük Yarışması",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Telefon Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Müzik Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Köpek Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Anahtar Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Yaz Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Şehir Festivali",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  },
+  {
+    "name": "Bilgisayar Merkezi",
+    "roles": [
+      "Casus",
+      "Uzman",
+      "Görevli",
+      "Ziyaretçi",
+      "Yönetici"
+    ]
+  }
+]

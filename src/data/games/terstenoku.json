@@ -1,0 +1,122 @@
+[
+  {
+    "normal": "telefon",
+    "reversed": "nofelet"
+  },
+  {
+    "normal": "bilgisayar",
+    "reversed": "rayasiglib"
+  },
+  {
+    "normal": "pencere",
+    "reversed": "erecnep"
+  },
+  {
+    "normal": "kitaplık",
+    "reversed": "kılpatik"
+  },
+  {
+    "normal": "futbol",
+    "reversed": "lobtuf"
+  },
+  {
+    "normal": "sinema",
+    "reversed": "amenis"
+  },
+  {
+    "normal": "kahvaltı",
+    "reversed": "ıtlavhak"
+  },
+  {
+    "normal": "kulaklık",
+    "reversed": "kılkaluk"
+  },
+  {
+    "normal": "anahtar",
+    "reversed": "rathana"
+  },
+  {
+    "normal": "televizyon",
+    "reversed": "noyzivelet"
+  },
+  {
+    "normal": "bisiklet",
+    "reversed": "telkisib"
+  },
+  {
+    "normal": "yastık",
+    "reversed": "kıtsay"
+  },
+  {
+    "normal": "müzik",
+    "reversed": "kizüm"
+  },
+  {
+    "normal": "gözlük",
+    "reversed": "külzög"
+  },
+  {
+    "normal": "yolculuk",
+    "reversed": "kulucloy"
+  },
+  {
+    "normal": "deniz",
+    "reversed": "zined"
+  },
+  {
+    "normal": "orman",
+    "reversed": "namro"
+  },
+  {
+    "normal": "tatil",
+    "reversed": "litat"
+  },
+  {
+    "normal": "kamera",
+    "reversed": "aremak"
+  },
+  {
+    "normal": "şarj",
+    "reversed": "jraş"
+  },
+  {
+    "normal": "çorap",
+    "reversed": "paroç"
+  },
+  {
+    "normal": "battaniye",
+    "reversed": "eyinattab"
+  },
+  {
+    "normal": "kütüphane",
+    "reversed": "enahpütük"
+  },
+  {
+    "normal": "tarayıcı",
+    "reversed": "ıcıyarat"
+  },
+  {
+    "normal": "fırça",
+    "reversed": "açrıf"
+  },
+  {
+    "normal": "kavanoz",
+    "reversed": "zonavak"
+  },
+  {
+    "normal": "şemsiye",
+    "reversed": "eyismeş"
+  },
+  {
+    "normal": "sandviç",
+    "reversed": "çivdnas"
+  },
+  {
+    "normal": "mendil",
+    "reversed": "lidnem"
+  },
+  {
+    "normal": "ayakkabı",
+    "reversed": "ıbakkaya"
+  }
+]
