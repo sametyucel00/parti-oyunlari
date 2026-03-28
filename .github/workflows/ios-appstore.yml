@@ -57,6 +57,25 @@ jobs:
           echo "Guncellenen Info.plist: $INFO_PLIST"
           /usr/libexec/PlistBuddy -c "Print :ITSAppUsesNonExemptEncryption" "$INFO_PLIST"
 
+      - name: Set build version
+        run: |
+          INFO_PLIST=$(find ios -name Info.plist | head -n 1)
+
+          if [ -z "$INFO_PLIST" ]; then
+            echo "Info.plist bulunamadi"
+            exit 1
+          fi
+
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString 1.0.1" "$INFO_PLIST" || \
+          /usr/libexec/PlistBuddy -c "Add :CFBundleShortVersionString string 1.0.1" "$INFO_PLIST"
+
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $GITHUB_RUN_NUMBER" "$INFO_PLIST" || \
+          /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $GITHUB_RUN_NUMBER" "$INFO_PLIST"
+
+          echo "Version bilgileri:"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$INFO_PLIST"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFO_PLIST"
+
       - name: Locate Xcode project
         run: |
           PROJECT_FILE=$(find ios -name "*.xcodeproj" | head -n 1)
