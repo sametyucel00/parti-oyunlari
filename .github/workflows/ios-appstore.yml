@@ -251,6 +251,23 @@ jobs:
             -exportOptionsPlist exportOptions.plist \
             -exportPath build/export
 
+      - name: Inspect IPA version
+        run: |
+          rm -rf ipa_unpack
+          mkdir -p ipa_unpack
+          unzip -q build/export/App.ipa -d ipa_unpack
+
+          APP_PLIST=$(find ipa_unpack -path "*Payload/*.app/Info.plist" | head -n 1)
+
+          if [ -z "$APP_PLIST" ]; then
+            echo "IPA icinde Info.plist bulunamadi"
+            exit 1
+          fi
+
+          echo "IPA Info.plist: $APP_PLIST"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP_PLIST" || true
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP_PLIST" || true
+
       - name: Verify IPA
         run: |
           if [ -f "build/export/App.ipa" ]; then
