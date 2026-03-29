@@ -6,13 +6,19 @@ export const Button = ({ children, onClick, variant = 'primary', className = '',
     const safeVariant = ['primary', 'danger', 'outline'].includes(variant) ? variant : 'primary';
 
     const handleClick = (e) => {
-        playClick();
+        try {
+            playClick?.();
+        } catch (error) {
+            console.error('Button click sound failed:', error);
+        }
+
         if (onClick) onClick(e);
     };
 
     return (
         <button
             className={`btn btn-${safeVariant} ${className}`}
+            type={props.type || 'button'}
             onClick={handleClick}
             {...props}
         >
