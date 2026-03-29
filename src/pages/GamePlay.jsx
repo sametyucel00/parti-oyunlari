@@ -129,13 +129,23 @@ const GamePlay = () => {
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100dvh', width: '100%', overflow: 'hidden' }}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100dvh',
+            width: '100%',
+            overflow: 'hidden',
+            paddingTop: 'env(safe-area-inset-top, 0px)',
+            paddingLeft: 'env(safe-area-inset-left, 0px)',
+            paddingRight: 'env(safe-area-inset-right, 0px)',
+            paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+        }}>
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'auto 1fr auto',
+                gridTemplateColumns: 'minmax(108px, auto) minmax(0, 1fr) minmax(88px, auto)',
                 alignItems: 'center',
                 gap: '0.5rem',
-                padding: '0.5rem 0.75rem',
+                padding: '0.75rem 1rem 0.6rem',
                 background: 'rgba(0,0,0,0.6)',
                 borderBottom: `2px solid ${gameMeta.color}`,
                 backdropFilter: 'blur(15px)',
@@ -169,12 +179,12 @@ const GamePlay = () => {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'flex-end' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', overflow: 'hidden' }}>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 'bold', lineHeight: '1.1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{currentPlayer.name}</span>
-                        <span style={{ color: 'var(--success-color)', fontSize: '0.7rem', fontWeight: 'bold' }}>Puan: {currentPlayer.score}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'flex-end', minWidth: 0 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', overflow: 'hidden', minWidth: 0, maxWidth: '96px' }}>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 'bold', lineHeight: '1.1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', textAlign: 'right' }}>{currentPlayer.name}</span>
+                        <span style={{ color: 'var(--success-color)', fontSize: '0.7rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Puan: {currentPlayer.score}</span>
                     </div>
-                    <span style={{ fontSize: '1.25rem' }}>{currentPlayer.avatar}</span>
+                    <span style={{ fontSize: '1.25rem', flexShrink: 0 }}>{currentPlayer.avatar}</span>
                 </div>
             </div>
 
