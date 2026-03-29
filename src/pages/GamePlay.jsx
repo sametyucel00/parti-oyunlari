@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { PlayerStorage, GroupStorage } from '../utils/storage';
 import { GAMES } from '../data/gameList';
@@ -120,6 +120,10 @@ const GamePlay = () => {
         }
     };
 
+    const handlePauseToggle = () => {
+        setGameState(prevState => (prevState === 'paused' ? 'playing' : 'paused'));
+    };
+
     if (gameState === 'game_over') {
         return <GameOver gameId={gameId} mode={mode} players={players} rounds={round} />;
     }
@@ -137,8 +141,23 @@ const GamePlay = () => {
                 backdropFilter: 'blur(15px)',
                 zIndex: 50
             }}>
-                <Button variant="outline" onClick={() => setGameState(gameState === 'playing' ? 'paused' : 'playing')} style={{ padding: '0.4rem', border: 'none', background: 'rgba(255,255,255,0.05)', borderRadius: '0.5rem' }}>
+                <Button
+                    variant="outline"
+                    onClick={handlePauseToggle}
+                    aria-label={gameState === 'paused' ? 'Oyuna devam et' : 'Oyunu duraklat'}
+                    style={{
+                        minHeight: '44px',
+                        minWidth: '108px',
+                        padding: '0.65rem 0.9rem',
+                        border: 'none',
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '0.75rem',
+                        fontSize: '0.95rem',
+                        flexShrink: 0
+                    }}
+                >
                     {gameState === 'paused' ? <FaPlay size={14} /> : <FaPause size={14} />}
+                    <span>{gameState === 'paused' ? 'Devam Et' : 'Duraklat'}</span>
                 </Button>
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
