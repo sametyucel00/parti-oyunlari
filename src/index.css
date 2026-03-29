@@ -97,6 +97,10 @@ a {
   border: none;
   outline: none;
   color: white;
+  min-height: 44px;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .btn:active {
