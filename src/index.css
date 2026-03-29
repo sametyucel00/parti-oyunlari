@@ -328,10 +328,11 @@ a {
     padding: 1rem;
     border-radius: 0.85rem;
   }
-}@media (max-width: 639px) {
+}
+
+@media (max-width: 639px) {
   .player-avatar-grid {
     grid-template-columns: repeat(5, 1fr) !important;
     gap: 0.5rem;
   }
 }
-
