@@ -1,64 +1,89 @@
-import React from 'react';
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode, Component } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Capacitor } from '@capacitor/core';
+import './index.css';
 
-const runTextDataMigration = () => {
-  const FIX_KEY = 'party_games_text_migration_v1';
-  try {
-    if (localStorage.getItem(FIX_KEY) === '1') return;
+if (typeof window !== 'undefined' && !Capacitor.isNativePlatform() && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => registration.unregister());
+    }).catch(() => {});
 
-    const keysToClear = [];
-    for (let i = 0; i < localStorage.length; i += 1) {
-      const key = localStorage.key(i);
-      if (!key) continue;
-      if (key.startsWith('game_pool_') || key.startsWith('party_games_pools_v')) {
-        keysToClear.push(key);
-      }
+    if ('caches' in window) {
+      caches.keys().then((keys) => {
+        keys
+          .filter((key) => key.startsWith('bayios'))
+          .forEach((key) => caches.delete(key));
+      }).catch(() => {});
     }
+  });
+}
 
-    keysToClear.forEach((key) => localStorage.removeItem(key));
-    localStorage.setItem(FIX_KEY, '1');
-  } catch (e) {
-    console.error('Text data migration failed:', e);
-  }
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+const showStartupError = (error) => {
+  root.render(
+    <div style={{ padding: '20px', color: '#b91c1c', background: '#fff', minHeight: '100vh', fontFamily: 'sans-serif' }}>
+      <h1>Uygulama baslatilamadi.</h1>
+      <pre style={{ whiteSpace: 'pre-wrap' }}>{error?.stack || error?.message || String(error)}</pre>
+      <button onClick={() => window.location.reload()}>Sayfayi Yenile</button>
+    </div>
+  );
 };
 
-runTextDataMigration();
+window.addEventListener('error', (event) => {
+  console.error('Global startup error:', event.error || event.message);
+});
 
-class ErrorBoundary extends React.Component {
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
+});
+
+class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null, info: null };
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error, info) {
-    this.setState({ error, info });
+  componentDidCatch(error, errorInfo) {
+    console.error('Uncaught error:', error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: '20px', color: 'red', background: 'black', minHeight: '100vh' }}>
-          <h1>Component Error</h1>
-          <pre>{this.state.error && this.state.error.toString()}</pre>
-          <pre>{this.state.info && this.state.info.componentStack}</pre>
+        <div style={{ padding: '20px', color: 'red', background: '#fff' }}>
+          <h1>Bir hata olustu.</h1>
+          <pre>{this.state.error?.toString?.() || 'Bilinmeyen hata'}</pre>
+          <button onClick={() => window.location.reload()}>Sayfayi Yenile</button>
         </div>
       );
     }
+
     return this.props.children;
   }
 }
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-  </StrictMode>,
-)
+const boot = async () => {
+  try {
+    const { default: App } = await import('./App.jsx');
+
+    root.render(
+      <StrictMode>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </StrictMode>
+    );
+  } catch (error) {
+    console.error('App boot failed:', error);
+    showStartupError(error);
+  }
+};
+
+boot();
